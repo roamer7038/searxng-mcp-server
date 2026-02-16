@@ -13,8 +13,34 @@ Privacy-focused web search via SearXNG for Model Context Protocol (MCP) clients.
 
 ### 1. Start the server
 
+You can start the server using one of the following Docker Compose configurations:
+
+#### Standard Usage (`compose.yml`)
+
+Uses the pre-built image from GitHub Container Registry. Recommended if you already have a SearXNG instance running (default: `http://localhost:8080`).
+
 ```bash
 docker compose up -d
+```
+
+#### Development & Build (`compose.dev.yml`)
+
+Builds the image from the local source code. Use this for development or if you want to modify the source.
+
+```bash
+docker compose -f compose.dev.yml up -d --build
+```
+
+#### Production / Full Stack (`compose.prod.yml`)
+
+Launches a complete stack including SearXNG, Nginx, and the MCP server. Use this if you don't have a SearXNG instance running yet. This setup includes:
+
+- **searxng**: SearXNG search engine instance
+- **searxng-mcp-server**: MCP server
+- **nginx**: Reverse proxy
+
+```bash
+docker compose -f compose.prod.yml up -d
 ```
 
 ### 2. Verify the server is running

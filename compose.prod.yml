@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: searxng-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - searxng
+      - searxng-mcp-server
+    networks:
+      - searxng-network
+
+  searxng:
+    container_name: searxng
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    volumes:
+      - ./config:/etc/searxng:rw
+      - ./data:/var/cache/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=${SEARXNG_URL:-http://localhost:8080}
+    networks:
+      - searxng-network
+
+  searxng-mcp-server:
+    container_name: searxng-mcp-server
+    image: ghcr.io/roamer7038/searxng-mcp-server:latest
+    restart: unless-stopped
+    environment:
+      - SEARXNG_URL=http://searxng:8080
+      - PORT=8081
+      - HOST=0.0.0.0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    networks:
+      - searxng-network
+
+networks:
+  searxng-network:
+    driver: bridge

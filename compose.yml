@@ -1,0 +1,12 @@
+services:
+  searxng-mcp-server:
+    container_name: searxng-mcp-server
+    image: ghcr.io/roamer7038/searxng-mcp-server:latest
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - SEARXNG_URL=${SEARXNG_URL:-http://localhost:8080}
+      - PORT=3000
+      - HOST=0.0.0.0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
