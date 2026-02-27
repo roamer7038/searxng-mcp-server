@@ -58,7 +58,22 @@ Expected response:
 }
 ```
 
-### 3. Configure your MCP client
+### 3. Enable JSON output in SearXNG
+
+If you are running your own SearXNG instance (especially via Docker Compose), you might encounter a `403 Forbidden` error when the MCP server tries to fetch search results. This happens because JSON output is disabled by default in SearXNG.
+
+To fix this, edit your SearXNG's `settings.yml` and add `json` to the search formats:
+
+```yaml
+search:
+  formats:
+    - html
+    - json  # Add this line to enable JSON output
+```
+
+Restart your SearXNG container after making this change.
+
+### 4. Configure your MCP client
 
 #### Claude Code
 
